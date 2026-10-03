@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>ĐĂNG LIO • Cổng Tiếp Năng Lượng & Donate (Dragon Luxury Edition)</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐉</text></svg>" />
 
@@ -449,7 +451,7 @@
                 Số tiền tùy ý (VNĐ):
               </label>
               <div class="relative">
-                <input id="customAmountInput" type="text" inputmode="numeric" value="20,000" oninput="onAmountInputChange(this)" class="w-full px-3 py-2 pl-8 rounded-xl bg-white border border-stone-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 text-stone-800 font-bold text-sm outline-none transition-all" placeholder="20,000" />
+                <input id="customAmountInput" type="text" inputmode="numeric" maxlength="15" value="20,000" oninput="onAmountInputChange(this)" class="w-full px-3 py-2 pl-8 rounded-xl bg-white border border-stone-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 text-stone-800 font-bold text-sm outline-none transition-all" placeholder="20,000" />
                 <span class="absolute left-3 top-2.5 text-stone-400 text-xs font-bold">₫</span>
               </div>
             </div>
@@ -460,7 +462,7 @@
                 Tên đại gia tài trợ:
               </label>
               <div class="relative">
-                <input id="senderNameInput" type="text" value="" placeholder="Đại gia giấu tên..." oninput="updateMemoPreview()" class="w-full px-3 py-2 pl-8 rounded-xl bg-white border border-stone-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 text-stone-800 text-sm outline-none transition-all" />
+                <input id="senderNameInput" type="text" maxlength="40" value="" placeholder="Đại gia giấu tên..." oninput="updateMemoPreview()" class="w-full px-3 py-2 pl-8 rounded-xl bg-white border border-stone-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 text-stone-800 text-sm outline-none transition-all" />
                 <span class="absolute left-2.5 top-2.5 text-amber-500">
                   <i data-lucide="user" class="w-3.5 h-3.5"></i>
                 </span>
@@ -474,7 +476,7 @@
               Lời nhắn gửi Đăng:
             </label>
             <div class="relative">
-              <input id="messageInput" type="text" value="Cứu Đăng khỏi chích điện" placeholder="Ví dụ: Chúc Đăng luôn tràn đầy linh lực rồng!" oninput="updateMemoPreview()" class="w-full px-3 py-2 pl-8 rounded-xl bg-white border border-stone-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 text-stone-800 text-sm outline-none transition-all" />
+              <input id="messageInput" type="text" maxlength="80" value="Cứu Đăng khỏi chích điện" placeholder="Ví dụ: Chúc Đăng luôn tràn đầy linh lực rồng!" oninput="updateMemoPreview()" class="w-full px-3 py-2 pl-8 rounded-xl bg-white border border-stone-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 text-stone-800 text-sm outline-none transition-all" />
               <span class="absolute left-2.5 top-2.5 text-emerald-600">
                 <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
               </span>
@@ -1382,14 +1384,26 @@
 
     /* Download QR Code */
     function downloadQrImage() {
-      const link = document.createElement('a');
-      link.href = document.getElementById('vietQrImage').src;
-      link.download = `VietQR_DangLio_${currentAmount}_${currentSessionId}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      playChime();
-      showToast('Đang tải ảnh mã VietQR xuống thiết bị!');
+      const qrImg = document.getElementById('vietQrImage');
+      if (!qrImg || !qrImg.src) return;
+      fetch(qrImg.src)
+        .then(res => res.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `VietQR_DangLio_${currentAmount}_${currentSessionId}.png`;
+          document.body.appendChild(link);
+          link.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(link);
+          playChime();
+          showToast('Đã tải ảnh mã VietQR xuống thiết bị!');
+        })
+        .catch(() => {
+          window.open(qrImg.src, '_blank', 'noopener,noreferrer');
+          showToast('Đang mở ảnh mã VietQR!');
+        });
     }
 
     /* Donation Success Modal & Celebration */
@@ -1425,10 +1439,23 @@
       document.getElementById('successModal').classList.add('hidden');
     }
 
+    function escapeHtml(text) {
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      };
+      return String(text || '').replace(/[&<>"']/g, m => map[m]);
+    }
+
     function addDonorToLiveList(name, amount, msg) {
       const list = document.getElementById('donorsList');
       const item = document.createElement('div');
       item.className = 'flex items-center justify-between p-2.5 rounded-2xl bg-amber-50/90 border-2 border-amber-300 shadow-sm transition-all animate-pulse';
+      const safeName = escapeHtml(name);
+      const safeMsg = escapeHtml(msg);
       item.innerHTML = `
         <div class="flex items-center gap-2.5 min-w-0">
           <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
@@ -1436,10 +1463,10 @@
           </div>
           <div class="truncate">
             <div class="flex items-center gap-2">
-              <span class="font-bold text-xs text-stone-900">${name}</span>
+              <span class="font-bold text-xs text-stone-900">${safeName}</span>
               <span class="text-[10px] text-emerald-700 font-bold">• Vừa xong</span>
             </div>
-            <p class="text-[11px] text-stone-600 italic truncate">"${msg}"</p>
+            <p class="text-[11px] text-stone-600 italic truncate">"${safeMsg}"</p>
           </div>
         </div>
         <div class="text-right flex-shrink-0 ml-2">
