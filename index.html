@@ -8,10 +8,10 @@
   <title>ĐĂNG LIO • Cổng Tiếp Năng Lượng & Donate (Dragon Luxury Edition)</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐉</text></svg>" />
 
-  <!-- Google Fonts: Cinzel & Plus Jakarta Sans -->
+  <!-- Google Fonts: Playfair Display, Cinzel & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -28,6 +28,7 @@
         extend: {
           fontFamily: {
             cinzel: ['Cinzel', 'serif'],
+            playfair: ['"Playfair Display"', 'Georgia', 'serif'],
             sans: ['"Plus Jakarta Sans"', 'sans-serif'],
           },
           colors: {
@@ -352,7 +353,7 @@
         </div>
 
         <!-- Identity Name & Subtitle -->
-        <h1 class="font-cinzel text-2xl sm:text-3xl font-extrabold tracking-widest text-[#78350f] uppercase flex items-center justify-center gap-2 drop-shadow-sm">
+        <h1 class="font-playfair text-2xl sm:text-3xl font-black tracking-wider text-[#78350f] uppercase flex items-center justify-center gap-2 drop-shadow-sm">
           <span>ĐĂNG LIO</span>
           <span class="text-emerald-600 text-lg sm:text-xl font-normal">✦</span>
         </h1>
@@ -383,7 +384,7 @@
       <!-- Elegant Divider -->
       <div class="relative my-3 flex items-center justify-center">
         <div class="w-full border-t border-amber-200/60"></div>
-        <span class="absolute px-3 bg-[#faf8f4] text-amber-600 text-xs font-cinzel font-semibold tracking-widest flex items-center gap-1.5">
+        <span class="absolute px-3 bg-[#faf8f4] text-amber-700 text-xs font-playfair font-bold tracking-wider flex items-center gap-1.5">
           <span>⚜</span>
           <span class="text-[11px] uppercase">Tiếp Năng Lượng</span>
           <span>⚜</span>
@@ -395,9 +396,9 @@
         
         <!-- 1. 4 Nút chọn tiền nhanh -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-stone-600 mb-2 font-cinzel flex items-center justify-between">
+          <label class="block text-xs font-bold uppercase tracking-wider text-stone-600 mb-2 font-sans flex items-center justify-between">
             <span>1. Chọn nhanh mức ủng hộ:</span>
-            <span class="text-[11px] font-normal text-emerald-700 font-sans">Chọn mức hoặc nhập bên dưới</span>
+            <span class="text-[11px] font-normal text-emerald-700">Chọn mức hoặc nhập bên dưới</span>
           </label>
           <div class="grid grid-cols-4 gap-2 sm:gap-2.5">
             <button type="button" onclick="selectQuickAmount(10000, this)" class="amount-btn relative py-2.5 px-1 rounded-2xl border text-center transition-all duration-200 bg-white/90 text-stone-700 border-stone-200/90 hover:border-amber-300 hover:bg-amber-50/50 shadow-xs">
@@ -421,9 +422,9 @@
 
         <!-- 2. Tag lý do donate lầy lội (Quick Reason Chips) -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-stone-600 mb-2 font-cinzel flex items-center justify-between">
+          <label class="block text-xs font-bold uppercase tracking-wider text-stone-600 mb-2 font-sans flex items-center justify-between">
             <span>2. Lý do khẩn cấp (1 chạm điền lời nhắn):</span>
-            <span class="text-[11px] font-normal text-amber-800 font-sans">Chạm để gán vào memo</span>
+            <span class="text-[11px] font-normal text-amber-800">Chạm để gán vào memo</span>
           </label>
           <div class="flex flex-wrap gap-1.5 sm:gap-2">
             <button type="button" onclick="selectReason('⚡ Cứu Đăng khỏi chích điện')" class="reason-chip px-3 py-1.5 rounded-full text-xs font-semibold bg-white/90 border border-amber-200/90 hover:border-amber-400 hover:bg-amber-50/70 text-stone-700 shadow-2xs transition-all active:scale-95">
@@ -487,7 +488,7 @@
 
         <!-- 4. NÚT ỦNG HỘ CHÍNH (HERO ACTION CTA BUTTON - BẤM ĐỂ MỞ MÃ QR NỔI TÁCH KHỎI NỀN) -->
         <div class="pt-2">
-          <button id="mainDonateBtn" type="button" onclick="activateQrSession()" class="w-full py-4 px-6 rounded-2xl gold-shimmer-btn text-amber-100 font-cinzel font-black text-base sm:text-lg tracking-wider border-2 border-amber-300 shadow-gold-glow hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98] group">
+          <button id="mainDonateBtn" type="button" onclick="activateQrSession()" class="w-full py-4 px-6 rounded-2xl gold-shimmer-btn text-amber-100 font-sans font-black text-base sm:text-lg tracking-wider border-2 border-amber-300 shadow-gold-glow hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98] group">
             <span class="text-xl sm:text-2xl group-hover:scale-125 transition-transform duration-300">⚡</span>
             <span id="mainDonateBtnText">ỦNG HỘ • 20,000 đ</span>
             <i data-lucide="sparkles" class="w-5 h-5 text-amber-300 group-hover:rotate-45 transition-transform"></i>
@@ -503,7 +504,7 @@
       <!-- SECTION D: BẢNG VÀNG TIẾP NĂNG LƯỢNG GẦN ĐÂY (RECENT DONORS) -->
       <section class="mt-8 pt-5 border-t border-amber-200/70">
         <div class="flex items-center justify-between mb-3">
-          <h3 class="font-cinzel text-xs sm:text-sm font-bold tracking-wider text-[#78350f] uppercase flex items-center gap-1.5">
+          <h3 class="font-playfair text-xs sm:text-sm font-bold tracking-wide text-[#78350f] uppercase flex items-center gap-1.5">
             <i data-lucide="award" class="w-4 h-4 text-amber-600"></i>
             <span>Bảng Vàng Tiếp Năng Lượng Gần Đây</span>
           </h3>
@@ -526,7 +527,7 @@
               </div>
             </div>
             <div class="text-right flex-shrink-0 ml-2">
-              <span class="font-cinzel font-bold text-xs sm:text-sm text-emerald-700">+50,000 đ</span>
+              <span class="font-playfair font-bold text-xs sm:text-sm text-emerald-700">+50,000 đ</span>
             </div>
           </div>
 
@@ -545,7 +546,7 @@
               </div>
             </div>
             <div class="text-right flex-shrink-0 ml-2">
-              <span class="font-cinzel font-bold text-xs sm:text-sm text-emerald-700">+20,000 đ</span>
+              <span class="font-playfair font-bold text-xs sm:text-sm text-emerald-700">+20,000 đ</span>
             </div>
           </div>
 
@@ -564,7 +565,7 @@
               </div>
             </div>
             <div class="text-right flex-shrink-0 ml-2">
-              <span class="font-cinzel font-bold text-xs sm:text-sm text-emerald-700">+100,000 đ</span>
+              <span class="font-playfair font-bold text-xs sm:text-sm text-emerald-700">+100,000 đ</span>
             </div>
           </div>
 
@@ -583,7 +584,7 @@
               </div>
             </div>
             <div class="text-right flex-shrink-0 ml-2">
-              <span class="font-cinzel font-bold text-xs sm:text-sm text-emerald-700">+10,000 đ</span>
+              <span class="font-playfair font-bold text-xs sm:text-sm text-emerald-700">+10,000 đ</span>
             </div>
           </div>
         </div>
@@ -591,7 +592,7 @@
 
       <!-- SECTION E: FOOTER -->
       <footer class="mt-8 pt-4 border-t border-amber-200/60 text-center space-y-1.5">
-        <p class="font-cinzel text-xs font-bold tracking-widest text-[#78350f]">
+        <p class="font-playfair text-xs font-bold tracking-wider text-[#78350f]">
           © 2026 ĐĂNG LIO • DRAGON EDITION
         </p>
         <p class="text-[10px] text-stone-400 font-medium">
@@ -635,7 +636,7 @@
             <i data-lucide="qr-code" class="w-4 h-4"></i>
           </div>
           <div>
-            <h2 class="font-cinzel text-sm sm:text-base font-bold text-[#78350f]">MÃ VIETQR CHUYỂN KHOẢN</h2>
+            <h2 class="font-playfair text-sm sm:text-base font-bold text-[#78350f] tracking-wide">MÃ VIETQR CHUYỂN KHOẢN</h2>
             <p class="text-[11px] text-stone-500 font-medium">Napas 247 • Nhận diện thanh toán tự động</p>
           </div>
         </div>
@@ -660,7 +661,7 @@
             <!-- Loading Spinner -->
             <div id="qrLoadingSpinner" class="absolute inset-0 bg-white/95 flex flex-col items-center justify-center gap-2 z-10 transition-opacity duration-200">
               <div class="w-10 h-10 border-4 border-amber-200 border-t-emerald-600 rounded-full animate-spin"></div>
-              <span class="text-xs font-semibold text-stone-600 font-cinzel">Khởi tạo VietQR...</span>
+              <span class="text-xs font-semibold text-stone-600 font-sans">Khởi tạo VietQR...</span>
             </div>
 
             <!-- Dynamic VietQR Image -->
@@ -713,7 +714,7 @@
           <div class="flex items-center justify-between py-1.5 px-3 rounded-xl bg-white border border-stone-200/90 shadow-2xs">
             <div class="flex flex-col text-left">
               <span class="text-[10px] text-stone-500 font-medium uppercase">Số tiền thanh toán:</span>
-              <span id="displayAmount" class="font-cinzel font-extrabold text-sm sm:text-base text-amber-700 tracking-wide">20,000 đ</span>
+              <span id="displayAmount" class="font-playfair font-extrabold text-sm sm:text-base text-amber-700 tracking-wide">20,000 đ</span>
             </div>
             <button type="button" onclick="copyText(currentAmount.toString(), this, 'Số tiền')" class="copy-btn px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-medium text-xs flex items-center gap-1 transition-all active:scale-95">
               <i data-lucide="copy" class="w-3 h-3"></i>
@@ -737,7 +738,7 @@
 
         <!-- Nút Xác Nhận Đã Chuyển Khoản -->
         <div class="pt-1">
-          <button type="button" onclick="triggerDonationSuccess()" class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-amber-950 font-cinzel font-black text-sm tracking-wider border-2 border-amber-300 shadow-gold-glow transition-all duration-200 flex items-center justify-center gap-2 active:scale-[0.98]">
+          <button type="button" onclick="triggerDonationSuccess()" class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-amber-950 font-sans font-black text-sm tracking-wider border-2 border-amber-300 shadow-gold-glow transition-all duration-200 flex items-center justify-center gap-2 active:scale-[0.98]">
             <span>✨</span>
             <span>TÔI ĐÃ CHUYỂN KHOẢN THÀNH CÔNG!</span>
             <span>✨</span>
@@ -751,13 +752,13 @@
         <div class="w-14 h-14 mx-auto rounded-full bg-rose-100 border border-rose-300 text-rose-600 flex items-center justify-center text-2xl mb-3 shadow-inner">
           ⏳
         </div>
-        <h4 class="font-cinzel font-bold text-base sm:text-lg text-amber-900 mb-1.5 uppercase tracking-wide">
+        <h4 class="font-playfair font-bold text-base sm:text-lg text-amber-900 mb-1.5 uppercase tracking-wide">
           ĐÃ HẾT 5 PHÚT • MÃ QR ĐÃ ĐƯỢC ẨN AN TOÀN
         </h4>
         <p class="text-xs text-stone-600 max-w-sm mx-auto mb-4 leading-relaxed font-medium">
           Để đảm bảo an toàn giao dịch và chống nhầm lẫn phiên, mã QR và thông tin tài khoản đã tự động biến mất. Vui lòng bấm bên dưới để tạo mã ủng hộ mới.
         </p>
-        <button type="button" onclick="activateQrSession()" class="py-3 px-6 rounded-2xl gold-shimmer-btn text-amber-200 font-cinzel font-bold text-xs sm:text-sm tracking-wider border border-amber-400 shadow-emerald-glow active:scale-95 transition-all inline-flex items-center gap-2">
+        <button type="button" onclick="activateQrSession()" class="py-3 px-6 rounded-2xl gold-shimmer-btn text-amber-200 font-sans font-bold text-xs sm:text-sm tracking-wider border border-amber-400 shadow-emerald-glow active:scale-95 transition-all inline-flex items-center gap-2">
           <i data-lucide="zap" class="w-4 h-4 text-amber-300"></i>
           <span>TẠO MÃ ỦNG HỘ MỚI (5 PHÚT)</span>
         </button>
@@ -780,7 +781,7 @@
       <button type="button" onclick="closeQrZoom()" class="absolute top-3 right-3 p-1.5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 transition-all">
         <i data-lucide="x" class="w-4 h-4"></i>
       </button>
-      <h3 class="font-cinzel font-bold text-[#78350f] text-base mb-1">QUÉT MÃ VIETQR</h3>
+      <h3 class="font-playfair font-bold text-[#78350f] text-base mb-1 tracking-wide">QUÉT MÃ VIETQR</h3>
       <p class="text-xs text-stone-500 mb-3">Mở ứng dụng Ngân hàng / MoMo quét mã bên dưới</p>
       
       <div class="bg-white p-3 rounded-2xl border border-stone-200 shadow-inner inline-block mx-auto mb-3">
@@ -793,7 +794,7 @@
         <p><strong class="text-stone-900">Số tiền:</strong> <span id="zoomAmountText" class="font-bold text-amber-700">20,000 đ</span></p>
       </div>
 
-      <button type="button" onclick="closeQrZoom()" class="w-full py-2 rounded-xl bg-stone-800 text-amber-200 font-cinzel font-bold text-xs tracking-wider">
+      <button type="button" onclick="closeQrZoom()" class="w-full py-2 rounded-xl bg-stone-800 text-amber-200 font-sans font-bold text-xs tracking-wider">
         ĐÓNG CỬA SỔ
       </button>
     </div>
@@ -812,10 +813,10 @@
         🐉
       </div>
 
-      <h3 class="font-cinzel text-xl sm:text-2xl font-black text-[#78350f] mb-1 uppercase tracking-wider">
+      <h3 class="font-playfair text-xl sm:text-2xl font-black text-[#78350f] mb-1 uppercase tracking-wider">
         CẢM ƠN ĐẠI GIA!
       </h3>
-      <p class="text-xs text-emerald-800 font-bold mb-4 uppercase tracking-widest">
+      <p class="text-xs text-emerald-800 font-bold mb-4 uppercase tracking-wider font-sans">
         ✦ NĂNG LƯỢNG RỒNG ĐÃ ĐƯỢC KẾT NỐI ✦
       </p>
 
@@ -826,7 +827,7 @@
         </div>
         <div class="flex justify-between">
           <span class="text-stone-500">Mức tiếp năng lượng:</span>
-          <span id="successDonorAmount" class="font-cinzel font-extrabold text-amber-700 text-sm">20,000 đ</span>
+          <span id="successDonorAmount" class="font-playfair font-extrabold text-amber-700 text-sm">20,000 đ</span>
         </div>
         <div class="flex justify-between">
           <span class="text-stone-500">Lời nhắn:</span>
@@ -838,7 +839,7 @@
         "Sự tiếp sức của bạn chính là nguồn linh lực to lớn giúp Đăng tiếp tục sáng tạo và chiến đấu với deadline! Chúc bạn tài lộc hanh thông, vạn sự như ý!"
       </p>
 
-      <button type="button" onclick="closeSuccessModal()" class="w-full py-2.5 rounded-xl gold-shimmer-btn text-amber-200 font-cinzel font-bold text-xs tracking-wider border border-amber-400 shadow-md">
+      <button type="button" onclick="closeSuccessModal()" class="w-full py-2.5 rounded-xl gold-shimmer-btn text-amber-200 font-sans font-bold text-xs tracking-wider border border-amber-400 shadow-md">
         TIẾP TỤC KHÁM PHÁ
       </button>
     </div>
@@ -1470,7 +1471,7 @@
           </div>
         </div>
         <div class="text-right flex-shrink-0 ml-2">
-          <span class="font-cinzel font-bold text-xs sm:text-sm text-emerald-800">+${formatVND(amount)} đ</span>
+          <span class="font-playfair font-bold text-xs sm:text-sm text-emerald-800">+${formatVND(amount)} đ</span>
         </div>
       `;
       list.prepend(item);
