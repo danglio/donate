@@ -42,47 +42,63 @@ function doPost(e) {
     var data = JSON.parse(rawData);
     
     // Kiểm tra dữ liệu chuyển khoản từ SePay
-    // Các trường SePay gửi qua: transferType ('in'), transferAmount, content, transactionDate, referenceCode
-    if (data.transferType === "in" || data.transferAmount > 0) {
+    // Các trường SePay gửi qua: transferType ('in'), transferAmount, content, description, transactionDate, referenceCode, id
+    if (data.transferType === "in" || Number(data.transferAmount) > 0) {
       var sheet = getOrCreateSheet();
+      var txnId = String(data.id || data.referenceCode || "");
+      
+      // 1. Chống trùng lặp giao dịch (Deduplication) nếu SePay gửi retry
+      if (txnId) {
+        var existingRows = sheet.getDataRange().getValues();
+        for (var r = 1; r < existingRows.length; r++) {
+          if (String(existingRows[r][6]) === txnId) {
+            return respondJson({ success: true, message: "Transaction already processed" });
+          }
+        }
+      }
       
       var now = new Date();
-      var dateStr = Utilities.formatDate(now, "Asia/Ho_Chi_Minh", "yyyy-MM-dd HH:mm:ss");
+      var dateStr = data.transactionDate || Utilities.formatDate(now, "Asia/Ho_Chi_Minh", "yyyy-MM-dd HH:mm:ss");
       var amount = Number(data.transferAmount) || 0;
       var rawContent = data.content || "";
-      var refCode = data.referenceCode || data.id || "";
+      var rawDesc = data.description || "";
       
       // Trích xuất mã phiên CUUDANG_XXXX
-      var codeMatch = rawContent.match(/CUUDANG[_\s]*([A-Z0-9]+)/i);
+      var codeMatch = rawContent.match(/CUUDANG[_\s]*([A-Z0-9]+)/i) || rawDesc.match(/CUUDANG[_\s]*([A-Z0-9]+)/i);
       var sessionCode = codeMatch ? ("CUUDANG_" + codeMatch[1].toUpperCase()) : "";
       
       // Bóc tách lời nhắn từ nội dung chuyển khoản
       var cleanMsg = rawContent.replace(/CUUDANG[_\s]*[A-Z0-9]+/i, "").trim();
-      if (!cleanMsg) {
-        cleanMsg = "Tiếp thêm linh lực rồng cho Đăng 🐉";
-      }
       
-      // Nếu lời nhắn có dạng "Tên - Lời nhắn" thì tách ra
+      // Bóc tách tên đại gia
       var donorName = "Đại gia giấu tên";
       if (cleanMsg.indexOf("-") > -1) {
         var parts = cleanMsg.split("-");
         var potentialName = parts[0].trim();
         if (potentialName.length >= 2 && potentialName.length <= 30) {
           donorName = potentialName;
-          cleanMsg = parts.slice(1).join("-").trim() || "Tiếp thêm linh lực rồng 🐉";
+          cleanMsg = parts.slice(1).join("-").trim();
         }
+      } else if (rawDesc) {
+        // Nếu SePay có trả về description chứa tên người gửi
+        var nameMatch = rawDesc.match(/([A-Z\s]{4,30})\s+(chuyen|ck|ung ho|donate)/i);
+        if (nameMatch && nameMatch[1]) {
+          donorName = nameMatch[1].trim();
+        }
+      }
+      
+      if (!cleanMsg) {
+        cleanMsg = "Tiếp thêm linh lực rồng cho Đăng 🐉";
       }
       
       // Ghi dòng mới vào Google Sheet:
       // [Thời Gian, Số Tiền, Nội Dung Gốc, Mã Phiên, Tên Đại Gia, Lời Nhắn, Mã Giao Dịch]
-      sheet.appendRow([dateStr, amount, rawContent, sessionCode, donorName, cleanMsg, refCode]);
+      sheet.appendRow([dateStr, amount, rawContent, sessionCode, donorName, cleanMsg, txnId]);
     }
     
-    return ContentService.createTextOutput(JSON.stringify({ success: true, message: "Webhook processed" }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return respondJson({ success: true, message: "Webhook processed" });
   } catch (err) {
-    return ContentService.createTextOutput(JSON.stringify({ success: false, error: err.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return respondJson({ success: false, error: err.toString() });
   }
 }
 
