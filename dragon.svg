@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="100%" height="100%">
+  <defs>
+    <!-- Royal Jade / Emerald Luxury Gradient -->
+    <linearGradient id="luxJade" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="40%" stop-color="#059669" />
+      <stop offset="80%" stop-color="#047857" />
+      <stop offset="100%" stop-color="#064e3b" />
+    </linearGradient>
+
+    <!-- Subtle Golden Champagne Accent -->
+    <linearGradient id="goldHairline" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde68a" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+
+    <!-- Soft Glow Filter -->
+    <filter id="emeraldAura" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Ambient Minimalist Jade Halo -->
+  <circle cx="150" cy="150" r="120" fill="url(#luxJade)" opacity="0.06" />
+
+  <!-- MINIMALIST LUXURY EMERALD DRAGON (Stylized Imperial Dragon Silhouette) -->
+  <g filter="url(#emeraldAura)">
+    
+    <!-- Outer Tail Wisp (Minimalist Fluid Curve) -->
+    <path d="M50,225 C65,245 95,255 125,250 C165,242 185,215 175,185 C168,162 142,152 125,160 C105,170 102,192 118,205 C132,216 155,212 165,198" 
+          fill="none" stroke="url(#luxJade)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Dragon Under-Spine Flow Line (Champagne Hairline Accent) -->
+    <path d="M58,222 C72,240 100,248 126,243 C160,236 177,212 168,187 C162,168 142,159 128,166" 
+          fill="none" stroke="url(#goldHairline)" stroke-width="1.8" opacity="0.85" stroke-linecap="round" />
+
+    <!-- Main Serpentine Body Arch (Bold, Smooth, Elegant) -->
+    <path d="M170,190 C185,165 190,135 175,105 C160,75 125,65 95,78 C70,90 58,118 68,142 C78,165 105,175 130,168" 
+          fill="none" stroke="url(#luxJade)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Inner Body Gold Flow Line -->
+    <path d="M166,182 C178,160 182,135 170,110 C156,83 126,74 100,85 C78,95 68,118 76,138" 
+          fill="none" stroke="url(#goldHairline)" stroke-width="2.2" opacity="0.9" stroke-linecap="round" />
+
+    <!-- Dragon Neck Ascending to Head -->
+    <path d="M175,108 C192,92 215,82 235,90 C248,96 255,108 250,122 C242,140 220,145 200,138" 
+          fill="none" stroke="url(#luxJade)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- DRAGON HEAD (Minimalist Noble Crest) -->
+    <!-- Cranium & Upper Snout -->
+    <path d="M230,88 C242,80 258,78 272,84 C278,87 282,92 278,97 C270,103 256,104 246,102 Z" 
+          fill="url(#luxJade)" />
+    <!-- Lower Jaw -->
+    <path d="M248,105 C258,108 268,107 274,103 C270,110 260,115 250,113 Z" 
+          fill="url(#luxJade)" />
+
+    <!-- Flowing Imperial Whiskers (Minimalist Calligraphic Curves) -->
+    <path d="M265,98 C280,105 292,122 288,142 C285,158 270,170 255,175" 
+          fill="none" stroke="url(#luxJade)" stroke-width="2.8" stroke-linecap="round" />
+    <path d="M260,102 C272,112 280,126 278,142" 
+          fill="none" stroke="url(#goldHairline)" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
+
+    <!-- Antler / Horn (Graceful Minimalist Gold & Jade Horns) -->
+    <path d="M234,84 C238,68 248,52 262,42 C258,54 252,64 246,74 C255,68 268,60 278,56 C268,72 254,84 240,88 Z" 
+          fill="url(#luxJade)" stroke="url(#goldHairline)" stroke-width="1" />
+    <path d="M224,87 C226,74 234,62 244,55 C240,64 236,72 232,80 Z" 
+          fill="url(#goldHairline)" opacity="0.9" />
+
+    <!-- Dragon Eye (Sharp, Regal Emerald/Gold Gaze) -->
+    <circle cx="246" cy="92" r="3.5" fill="#fef08a" />
+    <circle cx="246.5" cy="92" r="1.8" fill="#064e3b" />
+
+    <!-- Minimalist Dragon Claws (Imperial Talons Clasped Elegantly) -->
+    <!-- Front Claw -->
+    <g stroke="url(#luxJade)" stroke-width="4" stroke-linecap="round" fill="none">
+      <path d="M138,155 C128,140 115,135 102,138" />
+      <path d="M102,138 L94,132" />
+      <path d="M102,138 L92,142" />
+      <path d="M102,138 L96,148" />
+    </g>
+    <!-- Talon Tips in Champagne Gold -->
+    <circle cx="94" cy="132" r="2" fill="#fef08a" />
+    <circle cx="92" cy="142" r="2" fill="#fef08a" />
+    <circle cx="96" cy="148" r="2" fill="#fef08a" />
+
+    <!-- Back Claw Resting on Card Curve -->
+    <g stroke="url(#luxJade)" stroke-width="3.5" stroke-linecap="round" fill="none">
+      <path d="M172,175 C185,185 198,188 210,182" />
+      <path d="M210,182 L218,178" />
+      <path d="M210,182 L220,185" />
+    </g>
+
+    <!-- Dorsal Fin Crests (Subtle Geometric Luxury Spikes) -->
+    <g fill="url(#luxJade)">
+      <polygon points="168,88 178,74 175,93" />
+      <polygon points="148,72 156,58 155,77" />
+      <polygon points="125,67 130,52 133,71" />
+      <polygon points="102,72 104,58 110,75" />
+      <polygon points="80,87 78,74 87,90" />
+      <polygon points="65,110 58,100 70,116" />
+    </g>
+
+    <!-- Sacred Jade Pearl of Power (Minimalist Emblem) -->
+    <circle cx="218" cy="148" r="9" fill="url(#luxJade)" stroke="url(#goldHairline)" stroke-width="1.8" />
+    <circle cx="215" cy="145" r="2.5" fill="#ffffff" opacity="0.8" />
+    
+  </g>
+</svg>
