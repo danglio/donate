@@ -1667,6 +1667,53 @@
       }
     }
 
+    /* Chuẩn hóa dữ liệu người ủng hộ (Hỗ trợ cả Xác nhận 1-chạm VÀ SePay Webhook) */
+    function normalizeDonorPayload(raw) {
+      if (!raw) return null;
+
+      // 1. Trường hợp nhận dữ liệu từ SePay Webhook (khi tiền về Vietcombank)
+      if (raw.transferAmount !== undefined || raw.gateway !== undefined) {
+        if (raw.transferType && raw.transferType !== 'in') return null;
+        const amount = Number(raw.transferAmount) || 0;
+        if (amount <= 0) return null;
+
+        const rawContent = raw.content || '';
+        const rawDesc = raw.description || '';
+        let cleanMsg = rawContent.replace(/CUUDANG[_\s]*[A-Z0-9]+/i, '').trim();
+
+        let donorName = 'Đại gia giấu tên';
+        if (cleanMsg.indexOf('-') > -1) {
+          const parts = cleanMsg.split('-');
+          donorName = parts[0].trim();
+          cleanMsg = parts.slice(1).join('-').trim();
+        } else if (rawDesc) {
+          const match = rawDesc.match(/([A-Z\s]{4,30})\s+(chuyen|ck|ung ho|donate)/i);
+          if (match && match[1]) donorName = match[1].trim();
+        }
+
+        return {
+          id: String(raw.id || raw.referenceCode || ('sp_' + Date.now())),
+          name: donorName || 'Đại gia giấu tên',
+          amount: amount,
+          message: cleanMsg || 'Tiếp thêm linh lực rồng 🐉',
+          timestamp: raw.transactionDate ? new Date(raw.transactionDate.replace(/-/g, '/')).getTime() : Date.now()
+        };
+      }
+
+      // 2. Trường hợp nhận dữ liệu từ Xác nhận 1-chạm
+      if (raw.amount) {
+        return {
+          id: String(raw.id || ('dn_' + Date.now())),
+          name: raw.name || 'Đại gia giấu tên',
+          amount: Number(raw.amount),
+          message: raw.message || 'Tiếp thêm linh lực rồng 🐉',
+          timestamp: raw.timestamp ? Number(raw.timestamp) : Date.now()
+        };
+      }
+
+      return null;
+    }
+
     /* Kết nối kênh Real-time Đa Thiết Bị (ntfy.sh Pub/Sub & SSE) */
     function initRealtimeDonorsNetwork() {
       if (!CONFIG.broadcastUrl) return;
@@ -1683,11 +1730,11 @@
               const item = JSON.parse(line);
               if (item.message) {
                 const payload = JSON.parse(item.message);
-                if (payload && payload.amount) {
-                  // Kiểm tra trùng lặp
-                  const exists = activeDonors.some(d => d.id === payload.id || (d.name === payload.name && d.timestamp === payload.timestamp));
+                const donor = normalizeDonorPayload(payload);
+                if (donor && donor.amount > 0) {
+                  const exists = activeDonors.some(d => d.id === donor.id || (d.name === donor.name && d.timestamp === donor.timestamp));
                   if (!exists) {
-                    activeDonors.push(payload);
+                    activeDonors.push(donor);
                     hasNew = true;
                   }
                 }
@@ -1704,7 +1751,7 @@
         })
         .catch(() => {});
 
-      // 2. Lắng nghe sự kiện SSE thời gian thực khi có ai bấm donate
+      // 2. Lắng nghe sự kiện SSE thời gian thực khi có ai chuyển khoản hoặc bấm donate
       try {
         const sse = new EventSource(`${CONFIG.broadcastUrl}/sse`);
         sse.onmessage = (e) => {
@@ -1712,14 +1759,20 @@
             const data = JSON.parse(e.data);
             if (data.message) {
               const payload = JSON.parse(data.message);
-              if (payload && payload.amount) {
-                const exists = activeDonors.some(d => d.id === payload.id || (d.name === payload.name && d.timestamp === payload.timestamp));
+              const donor = normalizeDonorPayload(payload);
+              if (donor && donor.amount > 0) {
+                const exists = activeDonors.some(d => d.id === donor.id || (d.name === donor.name && d.timestamp === donor.timestamp));
                 if (!exists) {
-                  activeDonors.unshift(payload);
+                  activeDonors.unshift(donor);
                   saveStoredDonors(activeDonors);
                   renderDonors(activeDonors);
-                  showToast(`⚡ ${payload.name} vừa tiếp sức ${formatVND(payload.amount)} đ!`, 'award');
+                  showToast(`⚡ ${donor.name} vừa tiếp sức ${formatVND(donor.amount)} đ!`, 'award');
                   playTone(587.33, 'sine', 0.2, 0.05);
+
+                  // Nếu đang mở mã QR có trùng số tiền thì tự động ăn mừng
+                  if (isSessionActive && currentAmount === donor.amount) {
+                    triggerDonationSuccess(donor.name, donor.amount, donor.message, true);
+                  }
                 }
               }
             }
